@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Strings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comparador de Strings</h1>
+        
+        <div class="input-group">
+            <label for="string1">Primer string:</label>
+            <input type="text" id="string1" placeholder="Ingresa el primer texto">
+        </div>
+        
+        <div class="input-group">
+            <label for="string2">Segundo string:</label>
+            <input type="text" id="string2" placeholder="Ingresa el segundo texto">
+        </div>
+        
+        <button onclick="calcularDistancia()">Calcular Diferencia</button>
+        
+        <div class="result" id="resultado">
+            Resultado aparecerá aquí
+        </div>
+    </div>
+
+    <script>
+        // Función que calcula la distancia entre dos strings
+        function distancia(str1, str2) {
+            let diferencia = Math.abs(str1.length - str2.length);
+            const minLength = Math.min(str1.length, str2.length);
+            
+            for (let i = 0; i < minLength; i++) {
+                if (str1[i] !== str2[i]) {
+                    diferencia++;
+                }
+            }
+            
+            return diferencia;
+        }
+
+        // Función para la interfaz gráfica
+        function calcularDistancia() {
+            const string1 = document.getElementById('string1').value;
+            const string2 = document.getElementById('string2').value;
+            
+            const resultado = distancia(string1, string2);
+            
+            document.getElementById('resultado').innerHTML = 
+                `Diferencia: ${resultado} caracter(es)`;
+        }
+
+        // Pruebas en consola
+        console.log("Pruebas de la función distancia():");
+        console.log('distancia("hola", "hola") =', distancia("hola", "hola")); // 0
+        console.log('distancia("sol", "tol") =', distancia("sol", "tol")); // 1
+        console.log('distancia("carro", "correr") =', distancia("carro", "correr")); // 3
+        
+        // Pruebas adicionales
+        console.log('distancia("", "") =', distancia("", "")); // 0
+        console.log('distancia("a", "b") =', distancia("a", "b")); // 1
+        console.log('distancia("abc", "def") =', distancia("abc", "def")); // 3
+    </script>
+</body>
+</html>

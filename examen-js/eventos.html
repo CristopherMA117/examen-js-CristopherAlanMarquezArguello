@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Eventos Personalizado</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f3f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+            font-family: monospace;
+            font-size: 16px;
+            min-height: 100px;
+        }
+        .event-log {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #34495e;
+        }
+        .code {
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Eventos Personalizado</h1>
+        
+        <div class="input-group">
+            <label>Nombre:</label>
+            <input type="text" id="nombre" placeholder="Ej: Cris" value="Cris">
+        </div>
+        
+        <div class="input-group">
+            <label>Apellido:</label>
+            <input type="text" id="apellido" placeholder="Ej: Marquez" value="Marquez">
+        </div>
+        
+        <div style="text-align: center;">
+            <button onclick="registrarEvento()">Registrar Event Listener</button>
+            <button onclick="dispararEvento()">Disparar Evento</button>
+            <button onclick="probarEjemplo()">Probar Ejemplo Predefinido</button>
+        </div>
+        
+        <div class="result">
+            <h3>Registro de Eventos:</h3>
+            <div class="event-log" id="eventLog">
+                <!-- Los eventos se mostrarán aquí -->
+            </div>
+        </div>
+
+        <div class="code">
+// Implementación del sistema de eventos
+const eventSystem = {
+    eventos: {},
+    
+    myAddEventListener: function(nombreEvento, callback) {
+        if (!this.eventos[nombreEvento]) {
+            this.eventos[nombreEvento] = [];
+        }
+        this.eventos[nombreEvento].push(callback);
+        
+        // Log para demostración
+        this._logEvent(` Event listener registrado para: ${nombreEvento}`);
+    },
+    
+    myDispatchEvent: function(nombreEvento, datos) {
+        if (!this.eventos[nombreEvento]) {
+            this._logEvent(` No hay listeners para: ${nombreEvento}`);
+            return;
+        }
+        
+        this.eventos[nombreEvento].forEach(callback => {
+            try {
+                callback({ data: datos });
+                this._logEvent(` Evento disparado: ${nombreEvento}`);
+            } catch (error) {
+                this._logEvent(` Error en callback: ${error.message}`);
+            }
+        });
+    },
+    
+    _logEvent: function(mensaje) {
+        const log = document.getElementById('eventLog');
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.textContent = `${new Date().toLocaleTimeString()}: ${mensaje}`;
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+    }
+};
+
+// Funciones globales para usar desde HTML
+function myAddEventListener(nombreEvento, callback) {
+    eventSystem.myAddEventListener(nombreEvento, callback);
+}
+
+function myDispatchEvent(nombreEvento, datos) {
+    eventSystem.myDispatchEvent(nombreEvento, datos);
+}
+        </div>
+    </div>
+
+    <script>
+        // Implementación del sistema de eventos
+        const eventSystem = {
+            eventos: {},
+            
+            myAddEventListener: function(nombreEvento, callback) {
+                if (!this.eventos[nombreEvento]) {
+                    this.eventos[nombreEvento] = [];
+                }
+                this.eventos[nombreEvento].push(callback);
+                
+                // Log para demostración
+                this._logEvent(` Event listener registrado para: ${nombreEvento}`);
+            },
+            
+            myDispatchEvent: function(nombreEvento, datos) {
+                if (!this.eventos[nombreEvento]) {
+                    this._logEvent(` No hay listeners para: ${nombreEvento}`);
+                    return;
+                }
+                
+                this.eventos[nombreEvento].forEach(callback => {
+                    try {
+                        callback({ data: datos });
+                        this._logEvent(` Evento disparado: ${nombreEvento}`);
+                    } catch (error) {
+                        this._logEvent(` Error en callback: ${error.message}`);
+                    }
+                });
+            },
+            
+            _logEvent: function(mensaje) {
+                const log = document.getElementById('eventLog');
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+                entry.textContent = `${new Date().toLocaleTimeString()}: ${mensaje}`;
+                log.appendChild(entry);
+                log.scrollTop = log.scrollHeight;
+            }
+        };
+
+        // Funciones globales para usar desde HTML
+        function myAddEventListener(nombreEvento, callback) {
+            eventSystem.myAddEventListener(nombreEvento, callback);
+        }
+
+        function myDispatchEvent(nombreEvento, datos) {
+            eventSystem.myDispatchEvent(nombreEvento, datos);
+        }
+
+        // Funciones de la interfaz
+        function registrarEvento() {
+            myAddEventListener('my-event', ({data}) => {
+                eventSystem._logEvent(` Hola mi nombre es ${data.name} ${data.last}`);
+            });
+        }
+
+        function dispararEvento() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            
+            myDispatchEvent('my-event', {
+                name: nombre,
+                last: apellido
+            });
+        }
+
+        function probarEjemplo() {
+            // Registrar el evento
+            myAddEventListener('my-event', ({data}) => {
+                eventSystem._logEvent(` Hola mi nombre es ${data.name} ${data.last}`);
+            });
+            
+            // Disparar el evento después de un breve delay
+            setTimeout(() => {
+                myDispatchEvent('my-event', {
+                    name: 'Juan',
+                    last: 'Gonzalez'
+                });
+            }, 1000);
+        }
+
+        // Pruebas en consola
+        console.log("=== PRUEBAS DE EVENTOS ===");
+        
+        // Registrar evento
+        myAddEventListener('test-event', ({data}) => {
+            console.log('Evento recibido:', data);
+        });
+        
+        // Disparar evento
+        myDispatchEvent('test-event', { mensaje: 'Hola desde consola' });
+    </script>
+</body>
+</html>

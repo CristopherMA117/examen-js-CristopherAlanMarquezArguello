@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Servicio con Promesas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            font-family: monospace;
+            font-size: 16px;
+            min-height: 60px;
+        }
+        .success {
+            border-left-color: #27ae60;
+            background-color: #d5f4e6;
+        }
+        .error {
+            border-left-color: #e74c3c;
+            background-color: #fadbd8;
+        }
+        .loading {
+            border-left-color: #f39c12;
+            background-color: #fef9e7;
+        }
+        .code {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Servicio con Promesas</h1>
+        
+        <div class="control-group">
+            <button onclick="probarServicio(true)">Probar Servicio Exitoso</button>
+            <button onclick="probarServicio(false)">Probar Servicio Fallido</button>
+        </div>
+        
+        <div class="result" id="resultado">
+            El resultado aparecerá aquí...
+        </div>
+
+        <div class="code">
+// Función que simula el request al servicio
+function simularServicio(exitoso) {
+    return new Promise((resolve, reject) => {
+        const tiempoRespuesta = exitoso ? 8000 : 15000; // 8s exitoso, 15s fallido
+        
+        setTimeout(() => {
+            if (exitoso) {
+                resolve('Esta es la respuesta del servicio');
+            } else {
+                reject(new Error('Error: el servicio no está disponible'));
+            }
+        }, tiempoRespuesta);
+    });
+}
+
+// Función principal que usa Promise.race()
+function myMethod(exitoso) {
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error('Error: el servicio no responde en 12 segundos'));
+        }, 12000);
+    });
+
+    const servicePromise = simularServicio(exitoso);
+
+    return Promise.race([servicePromise, timeoutPromise])
+        .then(resultado => resultado)
+        .catch(error => error.message);
+}
+        </div>
+    </div>
+
+    <script>
+        // Función que simula el request al servicio
+        function simularServicio(exitoso) {
+            return new Promise((resolve, reject) => {
+                // Servicio exitoso responde en 8s, fallido en 15s
+                const tiempoRespuesta = exitoso ? 8000 : 15000;
+                
+                setTimeout(() => {
+                    if (exitoso) {
+                        resolve('Esta es la respuesta del servicio');
+                    } else {
+                        reject(new Error('Error: el servicio no está disponible'));
+                    }
+                }, tiempoRespuesta);
+            });
+        }
+
+        // Función principal que usa Promise.race()
+        function myMethod(exitoso) {
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => {
+                    reject(new Error('Error: el servicio no responde en 12 segundos'));
+                }, 12000);
+            });
+
+            const servicePromise = simularServicio(exitoso);
+
+            return Promise.race([servicePromise, timeoutPromise])
+                .then(resultado => resultado)
+                .catch(error => error.message);
+        }
+
+        // Función para probar desde la interfaz
+        function probarServicio(exitoso) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.className = 'result loading';
+            resultadoDiv.innerHTML = '⏳ Esperando respuesta del servicio...';
+            
+            myMethod(exitoso)
+                .then(resultado => {
+                    resultadoDiv.className = 'result success';
+                    resultadoDiv.innerHTML = ` ${resultado}`;
+                })
+                .catch(error => {
+                    resultadoDiv.className = 'result error';
+                    resultadoDiv.innerHTML = ` ${error.message}`;
+                });
+        }
+
+        // Pruebas en consola
+        console.log("=== PRUEBAS DE SERVICIO ===");
+        
+        // Prueba exitosa
+        myMethod(true)
+            .then(result => console.log('Servicio exitoso:', result))
+            .catch(error => console.log('Error:', error));
+        
+        // Prueba fallida
+        myMethod(false)
+            .then(result => console.log('Servicio fallido:', result))
+            .catch(error => console.log('Error:', error));
+    </script>
+</body>
+</html>

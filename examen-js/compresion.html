@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compresión de Strings y Reduce Personalizado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 18px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+        .code {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compresión de Strings y Reduce Personalizado</h1>
+        
+        <!-- Sección 1: Compresión de Strings -->
+        <div class="section">
+            <h2>1. Compresión de Strings</h2>
+            
+            <div class="input-group">
+                <label for="inputString">Ingresa un string para comprimir:</label>
+                <input type="text" id="inputString" placeholder="Ej: aabcccccaaa" value="aabcccccaaa">
+            </div>
+            
+            <div class="test-buttons">
+                <button onclick="comprimirInput()">Comprimir String</button>
+                <button onclick="probarEjemplosCompresion()">Probar Ejemplos</button>
+            </div>
+            
+            <div class="result" id="resultadoCompresion">
+                Resultado aparecerá aquí
+            </div>
+            
+            <div class="code">
+// Función de compresión
+function comprimirString(str) {
+    if (str.length === 0) return '';
+    
+    let resultado = '';
+    let contador = 1;
+    let caracterActual = str[0];
+    
+    for (let i = 1; i < str.length; i++) {
+        if (str[i] === caracterActual) {
+            contador++;
+        } else {
+            resultado += caracterActual + contador;
+            caracterActual = str[i];
+            contador = 1;
+        }
+    }
+    resultado += caracterActual + contador;
+    
+    return resultado;
+}
+            </div>
+        </div>
+        
+        <!-- Sección 2: Reduce Personalizado -->
+        <div class="section">
+            <h2>2. Reduce Personalizado</h2>
+            
+            <div class="input-group">
+                <label>Array de prueba: [1, 2, 3, 4, 5]</label>
+            </div>
+            
+            <button onclick="probarReduce()">Probar Reduce Personalizado</button>
+            
+            <div class="result" id="resultadoReduce">
+                Resultado aparecerá aquí
+            </div>
+            
+            <div class="code">
+// Implementación de reduce personalizado
+Array.prototype.myOwnReduce = function(callback, valorInicial) {
+    let acumulador = valorInicial !== undefined ? valorInicial : this[0];
+    let inicio = valorInicial !== undefined ? 0 : 1;
+    
+    for (let i = inicio; i < this.length; i++) {
+        acumulador = callback(this[i], acumulador, i, this);
+    }
+    
+    return acumulador;
+};
+
+// Callback de ejemplo
+const callbackSuma = (current, acumulator) => {
+    acumulator += current;
+    return acumulator;
+};
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== COMPRESIÓN DE STRINGS =====
+        function comprimirString(str) {
+            if (str.length === 0) return '';
+            
+            let resultado = '';
+            let contador = 1;
+            let caracterActual = str[0];
+            
+            for (let i = 1; i < str.length; i++) {
+                if (str[i] === caracterActual) {
+                    contador++;
+                } else {
+                    resultado += caracterActual + contador;
+                    caracterActual = str[i];
+                    contador = 1;
+                }
+            }
+            resultado += caracterActual + contador;
+            
+            return resultado;
+        }
+
+        function comprimirInput() {
+            const input = document.getElementById('inputString').value;
+            const resultado = comprimirString(input);
+            document.getElementById('resultadoCompresion').innerHTML = 
+                `<strong>Original:</strong> "${input}"<br>
+                 <strong>Comprimido:</strong> "${resultado}"`;
+        }
+
+        function probarEjemplosCompresion() {
+            const ejemplos = [
+                'aabcccccaaa',
+                'abc',
+                'a',
+                '',
+                'aaabbbccc',
+                'abcd'
+            ];
+            
+            let resultados = '<strong>Pruebas de compresión:</strong><br>';
+            ejemplos.forEach(ejemplo => {
+                resultados += `"${ejemplo}" → "${comprimirString(ejemplo)}"<br>`;
+            });
+            
+            document.getElementById('resultadoCompresion').innerHTML = resultados;
+        }
+
+        // ===== REDUCE PERSONALIZADO =====
+        Array.prototype.myOwnReduce = function(callback, valorInicial) {
+            let acumulador = valorInicial !== undefined ? valorInicial : this[0];
+            let inicio = valorInicial !== undefined ? 0 : 1;
+            
+            for (let i = inicio; i < this.length; i++) {
+                acumulador = callback(this[i], acumulador, i, this);
+            }
+            
+            return acumulador;
+        };
+
+        function probarReduce() {
+            const array = [1, 2, 3, 4, 5];
+            
+            const callbackSuma = (current, acumulator) => {
+                acumulator += current;
+                return acumulator;
+            };
+            
+            const callbackProducto = (current, acumulator) => {
+                acumulator *= current;
+                return acumulator;
+            };
+            
+            const suma = array.myOwnReduce(callbackSuma);
+            const sumaConInicial = array.myOwnReduce(callbackSuma, 10);
+            const producto = array.myOwnReduce(callbackProducto, 1);
+            
+            const resultado = `
+                <strong>Array:</strong> [${array.join(', ')}]<br>
+                <strong>Suma:</strong> ${suma}<br>
+                <strong>Suma con valor inicial 10:</strong> ${sumaConInicial}<br>
+                <strong>Producto:</strong> ${producto}
+            `;
+            
+            document.getElementById('resultadoReduce').innerHTML = resultado;
+        }
+
+        // ===== PRUEBAS EN CONSOLA =====
+        console.log("=== PRUEBAS DE COMPRESIÓN ===");
+        console.log('comprimirString("aabcccccaaa") =', comprimirString("aabcccccaaa")); // "a2b1c5a3"
+        console.log('comprimirString("abc") =', comprimirString("abc")); // "a1b1c1"
+        console.log('comprimirString("a") =', comprimirString("a")); // "a1"
+        console.log('comprimirString("") =', comprimirString("")); // ""
+
+        console.log("\n=== PRUEBAS DE REDUCE ===");
+        const arrayTest = [1, 2, 3, 4, 5];
+        const callbackTest = (current, acumulator) => {
+            acumulator += current;
+            return acumulator;
+        };
+        console.log('Reduce personalizado:', arrayTest.myOwnReduce(callbackTest)); // 15
+    </script>
+</body>
+</html>

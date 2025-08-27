@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos JavaScript</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .project-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-header {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .project-content {
+            padding: 20px;
+        }
+        
+        .project-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .btn {
+            display: block;
+            text-align: center;
+            background: #27ae60;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #219653;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #ecf0f1;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Proyectos JavaScript</h1>
+            <p class="subtitle">Colección de ejercicios y aplicaciones con JavaScript</p>
+        </header>
+        
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-header">
+                    <h2>Lista de Tareas</h2>
+                </div>
+                <div class="project-content">
+                    <p>Aplicación para gestionar tareas pendientes y completadas con persistencia local.</p>
+                    <a href="tarea-lista.html" class="btn">Abrir Proyecto</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <h2>Comparador de Strings</h2>
+                </div>
+                <div class="project-content">
+                    <p>Herramienta para calcular la diferencia entre dos strings, posición por posición.</p>
+                    <a href="comparador.html" class="btn">Abrir Proyecto</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <h2>Compresión de Strings</h2>
+                </div>
+                <div class="project-content">
+                    <p>Algoritmo de compresión simple que cuenta caracteres repetidos consecutivos.</p>
+                    <a href="compresion.html" class="btn">Abrir Proyecto</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <h2>Simulador de Promesas</h2>
+                </div>
+                <div class="project-content">
+                    <p>Simulación de requests a servicios con timeout usando Promise.race().</p>
+                    <a href="promesa.html" class="btn">Abrir Proyecto</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <h2>Sistema de Eventos</h2>
+                </div>
+                <div class="project-content">
+                    <p>Implementación personalizada de un sistema de eventos con addEventListener y dispatchEvent.</p>
+                    <a href="eventos.html" class="btn">Abrir Proyecto</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Proyectos de JavaScript - Ejercicios prácticos</p>
+        </footer>
+    </div>
+</body>
+</html>
